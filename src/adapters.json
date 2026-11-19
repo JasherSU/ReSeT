@@ -1,0 +1,59 @@
+{
+  "ortrack": {
+    "repository": "https://github.com/wuyou3474/ORTrack.git",
+    "revision": "ede2ed47f566b07f70fd5d81630597e05a54e96f",
+    "profile": "ortrack",
+    "patches": [
+      "patches/ortrack/vision_transformer.patch"
+    ],
+    "overlay": "overlays/ortrack",
+    "tracker_module": "lib.test.tracker.ortrack_reset",
+    "tracker_class": "ORTrack",
+    "parameter": "ortrack_reset",
+    "runner": "tracking/test.py"
+  },
+  "sglatrack": {
+    "repository": "https://github.com/GXNU-ZhongLab/SGLATrack.git",
+    "revision": "3e93bbe98ce97a1a956f5d32ab2a39d343cea2a3",
+    "profile": "standard",
+    "patches": [],
+    "overlay": "overlays/sglatrack",
+    "tracker_module": "lib.test.tracker.sglatrack_reset",
+    "tracker_class": "sglatrack_reset",
+    "parameter": "sglatrack_reset",
+    "runner": "tracking/test.py"
+  },
+  "compresstracker": {
+    "repository": "https://github.com/LingyiHongfd/CompressTracker.git",
+    "revision": "afbec1f5d96dea8735ae59c8b5caf376443e2405",
+    "profile": "standard",
+    "patches": [],
+    "overlay": "overlays/compresstracker",
+    "tracker_module": "lib.test.tracker.compresstracker_reset",
+    "tracker_class": "CompressTrackerReSeT",
+    "parameter": "compresstracker_reset",
+    "runner": "tracking/test.py"
+  },
+  "ostrack": {
+    "repository": "https://github.com/botaoye/OSTrack.git",
+    "revision": "33b5e12586216b7fd0e95d255bd01ba44cbec759",
+    "profile": "standard",
+    "patches": [],
+    "overlay": "overlays/ostrack",
+    "tracker_module": "lib.test.tracker.ostrack_reset",
+    "tracker_class": "OSTrackReSeT",
+    "parameter": "ostrack_reset",
+    "runner": "tracking/test.py"
+  },
+  "romtrack": {
+    "repository": "https://github.com/dawnyc/ROMTrack.git",
+    "revision": "e7a5cad8d9b25f18353c623c2d9ae6327f2c3b76",
+    "profile": "standard",
+    "patches": [],
+    "overlay": "overlays/romtrack",
+    "tracker_module": "lib.test.tracker.ROMTrack_reset",
+    "tracker_class": "ROMTrackReSeT",
+    "parameter": "ROMTrack_reset",
+    "runner": "tracking/test.py"
+  }
+}

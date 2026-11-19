@@ -1,0 +1,50 @@
+diff --git a/lib/models/ortrack/vision_transformer.py b/lib/models/ortrack/vision_transformer.py
+index 9612a59..7bc0713 100644
+--- a/lib/models/ortrack/vision_transformer.py
++++ b/lib/models/ortrack/vision_transformer.py
+@@ -508,6 +508,11 @@ class VisionTransformer(nn.Module):
+         self.pos_embed_z = nn.Parameter(torch.zeros(1, 64, embed_dim))
+         self.pos_embed_x = nn.Parameter(torch.zeros(1, 256, embed_dim))
+ 
++        self.add_cls_token = False
++        self.use_cls_token = False
++        self.cls_pos_embed = None
++        self.num_tokens_all = [0, 64, 256]
++
+         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, depth)]  # stochastic depth decay rule
+         self.blocks = nn.Sequential(*[
+             block_fn(
+@@ -673,14 +678,23 @@ class VisionTransformer(nn.Module):
+         return tuple(outputs)
+ 
+     def forward_features(self, z, x):
++        B = x.shape[0]
+         x = self.patch_embed(x)
+         z = self.patch_embed(z)
+ 
++        if self.add_cls_token:
++            cls_tokens = self.cls_token.expand(B, -1, -1)
++            if self.cls_pos_embed is not None:
++                cls_tokens = cls_tokens + self.cls_pos_embed
++
+         z += self.pos_embed_z
+         x += self.pos_embed_x
+ 
+         x = combine_tokens(z, x)
+ 
++        if self.add_cls_token:
++            x = torch.cat([cls_tokens, x], dim=1)
++
+         x = self.pos_drop(x)
+ 
+         for i, blk in enumerate(self.blocks):
+@@ -690,7 +704,8 @@ class VisionTransformer(nn.Module):
+         lens_x = self.pos_embed_x.shape[1]
+         x = recover_tokens(x, lens_z, lens_x)
+ 
+-        aux_dict = {"attn": None}
++        aux_dict = {"attn": None, "before_norm": x}
++
+         return self.norm(x), aux_dict
+ 
+     def forward_head(self, x: torch.Tensor, pre_logits: bool = False) -> torch.Tensor:
